@@ -300,14 +300,19 @@ class _VideoOrImageWithControlsState extends State<_VideoOrImageWithControls> {
     final v = widget.project.videoUrl;
 
     if (v != null && v.isNotEmpty) {
-      _controller = v.startsWith("http")
-          ? VideoPlayerController.network(v)
-          : VideoPlayerController.asset(v);
+      if (v.startsWith("http")) {
+        _controller = VideoPlayerController.network(v);
+      } else {
+        // For web, use network with full path, for mobile use asset
+        _controller = VideoPlayerController.network('$v');
+      }
 
       _controller!.initialize().then((_) {
         if (!mounted) return;
         setState(() => initialized = true);
         _controller!.setLooping(true);
+      }).catchError((error) {
+        print('Video initialization error: $error');
       });
     }
   }

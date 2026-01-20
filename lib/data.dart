@@ -63,7 +63,7 @@ class PortfolioData {
           "Graduation project • Event management system • Grade: 95/100 • Firebase & GetX & Rasa integration",
 
       url: "https://github.com/GhazalHazori/event_pop",
-      videoUrl: "assets/videos/eventpop.mp4", // 🔹 فيديو محلي
+      videoUrl: "/my_portfolio/assets/videos/eventpop.mp4", // 🔹 فيديو محلي
       tags: ["Flutter", "GetX", 'Languages','Responsive','Firebase'],
     ),
     Project(
