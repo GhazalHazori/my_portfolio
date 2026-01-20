@@ -186,13 +186,13 @@ class _HomePageState extends State<HomePage> {
                         child: ProjectsSection(key: projectsKey),
                       ),
                       SizedBox(height: sectionSpacing),
-                      ResponsiveSection(
-                        isMobile: isMobile,
-                        isTablet: isTablet,
-                        titleFontSize: titleFontSize,
-                        child: Container(key: experienceKey, child: const ExperienceSection()),
-                      ),
-                      SizedBox(height: sectionSpacing),
+                      // ResponsiveSection(
+                      //   isMobile: isMobile,
+                      //   isTablet: isTablet,
+                      //   titleFontSize: titleFontSize,
+                      //   child: Container(key: experienceKey, child: const ExperienceSection()),
+                      // ),
+                      // SizedBox(height: sectionSpacing),
                       ResponsiveSection(
                         isMobile: isMobile,
                         isTablet: isTablet,
