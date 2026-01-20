@@ -138,7 +138,7 @@ class _ExperienceCardState extends State<_ExperienceCard>
                      color: _hovering
                          ? const Color.fromARGB(255, 150, 100, 200).withOpacity(0.4)
 
-                         : Colors.black.withValues(alpha: 0.3),
+                         : Colors.black.withOpacity(0.3),
                      blurRadius: _hovering ? 20 : 8,
                      spreadRadius: _hovering ? 2 : 0,
                      offset: const Offset(0, 4),
