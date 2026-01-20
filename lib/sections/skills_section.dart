@@ -179,17 +179,52 @@ class _GradientChipState extends State<GradientChip> {
 }
 
 /// ------------------ Language Progress Bar ------------------
-class LanguageBar extends StatelessWidget {
+class LanguageBar extends StatefulWidget {
   final String language;
   final double level;
 
   const LanguageBar({super.key, required this.language, required this.level});
 
   @override
+  State<LanguageBar> createState() => _LanguageBarState();
+}
+
+class _LanguageBarState extends State<LanguageBar>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 2500),
+      vsync: this,
+    );
+
+    _animation = Tween<double>(begin: 0, end: widget.level).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    // تأخير صغير قبل البدء
+    Future.delayed(const Duration(seconds: 1), () {
+      if (mounted) {
+        _controller.forward();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
     final isMobile = mq.width <= 600;
-    
+
     final textFontSize = isMobile ? 14.0 : 16.0;
     final barHeight = isMobile ? 6.0 : 8.0;
     final spacing = isMobile ? 4.0 : 6.0;
@@ -205,7 +240,7 @@ class LanguageBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          language,
+          widget.language,
           style: TextStyle(
             fontSize: textFontSize,
             fontWeight: FontWeight.w600,
@@ -213,29 +248,34 @@ class LanguageBar extends StatelessWidget {
           ),
         ),
         SizedBox(height: spacing),
-        Container(
-          height: barHeight,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: LayoutBuilder(
-            builder: (context, constraints) => Stack(
-              children: [
-                Container(
-                  width: constraints.maxWidth * level,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: gradientColors,
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+        AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return Container(
+              height: barHeight,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: LayoutBuilder(
+                builder: (context, constraints) => Stack(
+                  children: [
+                    Container(
+                      width: constraints.maxWidth * _animation.value,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: gradientColors,
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ],
     );

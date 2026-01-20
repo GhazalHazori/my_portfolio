@@ -3,6 +3,10 @@ import 'package:flutter/rendering.dart';
 import 'package:my_portfolio/sections/certificate_section.dart';
 import 'package:my_portfolio/sections/course_section.dart';
 import 'package:my_portfolio/sections/education_section.dart';
+import 'package:my_portfolio/sections/experience_section.dart';
+import 'package:my_portfolio/sections/profile_section.dart';
+import 'package:my_portfolio/sections/cta_section.dart';
+import 'package:my_portfolio/sections/development_process_section.dart';
 import 'sections/home_section.dart';
 import 'sections/about_section.dart';
 import 'sections/skills_section.dart';
@@ -38,12 +42,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey profileKey = GlobalKey();
   final GlobalKey aboutKey = GlobalKey();
   final GlobalKey skillsKey = GlobalKey();
   final GlobalKey projectsKey = GlobalKey();
+  final GlobalKey experienceKey = GlobalKey();
   final GlobalKey educationKey = GlobalKey();
   final GlobalKey coursesKey = GlobalKey();
   final GlobalKey certificatesKey = GlobalKey();
+  final GlobalKey ctaKey = GlobalKey();
+  final GlobalKey developmentKey = GlobalKey();
   final GlobalKey contactKey = GlobalKey();
   
   late ScrollController _scrollController;
@@ -83,12 +91,16 @@ class _HomePageState extends State<HomePage> {
     setState(() => _bottomNavIndex = index);
     
     final keys = [
+      profileKey,
       aboutKey,
       skillsKey,
       projectsKey,
+      experienceKey,
       educationKey,
       coursesKey,
       certificatesKey,
+      ctaKey,
+      developmentKey,
       contactKey,
     ];
     
@@ -150,6 +162,13 @@ class _HomePageState extends State<HomePage> {
                         isMobile: isMobile,
                         isTablet: isTablet,
                         titleFontSize: titleFontSize,
+                        child: Container(key: profileKey, child: const ProfileSection()),
+                      ),
+                      SizedBox(height: sectionSpacing),
+                      ResponsiveSection(
+                        isMobile: isMobile,
+                        isTablet: isTablet,
+                        titleFontSize: titleFontSize,
                         child: Container(key: aboutKey, child: const AboutSection()),
                       ),
                       SizedBox(height: sectionSpacing),
@@ -171,6 +190,13 @@ class _HomePageState extends State<HomePage> {
                         isMobile: isMobile,
                         isTablet: isTablet,
                         titleFontSize: titleFontSize,
+                        child: Container(key: experienceKey, child: const ExperienceSection()),
+                      ),
+                      SizedBox(height: sectionSpacing),
+                      ResponsiveSection(
+                        isMobile: isMobile,
+                        isTablet: isTablet,
+                        titleFontSize: titleFontSize,
                         child: Container(key: educationKey, child: const EducationSection()),
                       ),
                       SizedBox(height: sectionSpacing),
@@ -186,6 +212,16 @@ class _HomePageState extends State<HomePage> {
                         isTablet: isTablet,
                         titleFontSize: titleFontSize,
                         child: Container(key: certificatesKey, child: CertificatesSection()),
+                      ),
+                      SizedBox(height: sectionSpacing),
+                      Container(
+                        key: ctaKey,
+                        child: const CTASection(),
+                      ),
+                      SizedBox(height: sectionSpacing),
+                      Container(
+                        key: developmentKey,
+                        child: const DevelopmentProcessSection(),
                       ),
                       SizedBox(height: sectionSpacing),
                       ResponsiveSection(
@@ -223,6 +259,10 @@ class _HomePageState extends State<HomePage> {
       ),
       actions: [
         TextButton(
+          onPressed: () => scrollTo(profileKey),
+          child: const Text('Profile', style: TextStyle(color: Colors.white70)),
+        ),
+        TextButton(
           onPressed: () => scrollTo(aboutKey),
           child: const Text('About', style: TextStyle(color: Colors.white70)),
         ),
@@ -233,6 +273,10 @@ class _HomePageState extends State<HomePage> {
         TextButton(
           onPressed: () => scrollTo(projectsKey),
           child: const Text('Projects', style: TextStyle(color: Colors.white70)),
+        ),
+        TextButton(
+          onPressed: () => scrollTo(experienceKey),
+          child: const Text('Experience', style: TextStyle(color: Colors.white70)),
         ),
         TextButton(
           onPressed: () => scrollTo(educationKey),
@@ -266,6 +310,10 @@ class _HomePageState extends State<HomePage> {
       onTap: _navigateToSection,
       items: const [
         BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle),
+          label: 'Profile',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'About',
         ),
@@ -276,6 +324,10 @@ class _HomePageState extends State<HomePage> {
         BottomNavigationBarItem(
           icon: Icon(Icons.work),
           label: 'Projects',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.business_center),
+          label: 'Exp',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.school),
