@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 class ExperienceSection extends StatelessWidget {
   const ExperienceSection({super.key});
@@ -55,65 +56,47 @@ class ExperienceSection extends StatelessWidget {
 }
 
 class _ExperienceCard extends StatefulWidget {
-  final String label;
-  final String value;
-  final int delay;
-  final bool isMobile;
+   final String label;
+   final String value;
+   final int delay;
+   final bool isMobile;
 
-  const _ExperienceCard({
-    required this.label,
-    required this.value,
-    required this.delay,
-    required this.isMobile,
-  });
+   const _ExperienceCard({
+     required this.label,
+     required this.value,
+     required this.delay,
+     required this.isMobile,
+   });
 
-  @override
-  State<_ExperienceCard> createState() => _ExperienceCardState();
+   @override
+   State<_ExperienceCard> createState() => _ExperienceCardState();
 }
 
-class _ExperienceCardState extends State<_ExperienceCard>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _fadeAnimation;
-  bool _hovering = false;
+class _ExperienceCardState extends State<_ExperienceCard> {
+   bool _isVisible = false;
+   bool _hovering = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
-    );
-
-    // بدء الـ animation بعد الـ delay
-    Future.delayed(Duration(milliseconds: widget.delay), () {
-      if (mounted) {
-        _animationController.forward();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+   @override
+   void initState() {
+     super.initState();
+     final isWeb = !Platform.isAndroid && !Platform.isIOS;
+     final actualDelay = isWeb ? 0 : widget.delay;
+     
+     Future.delayed(Duration(milliseconds: actualDelay), () {
+       if (mounted) {
+         setState(() => _isVisible = true);
+       }
+     });
+   }
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
+    return AnimatedOpacity(
+      opacity: _isVisible ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 600),
+      child: AnimatedScale(
+        scale: _isVisible ? 1.0 : 0.8,
+        duration: const Duration(milliseconds: 600),
         child: SizedBox.expand(
           child: MouseRegion(
             onEnter: (_) => setState(() => _hovering = true),
@@ -137,7 +120,6 @@ class _ExperienceCardState extends State<_ExperienceCard>
                    BoxShadow(
                      color: _hovering
                          ? const Color.fromARGB(255, 150, 100, 200).withOpacity(0.4)
-
                          : Colors.black.withOpacity(0.3),
                      blurRadius: _hovering ? 20 : 8,
                      spreadRadius: _hovering ? 2 : 0,
