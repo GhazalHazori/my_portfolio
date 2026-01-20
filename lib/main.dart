@@ -16,11 +16,6 @@ class MyPortfolioApp extends StatelessWidget {
     return MaterialApp(
       title: 'Portfolio',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme: GoogleFonts.interTextTheme(),
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF5B2C6F)),
-        useMaterial3: true,
-      ),
       home: const HomePage(),
     );
   }
