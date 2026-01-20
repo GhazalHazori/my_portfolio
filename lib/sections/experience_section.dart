@@ -23,30 +23,28 @@ class ExperienceSection extends StatelessWidget {
           ),
         ),
         SizedBox(height: isMobile ? 16 : 24),
-        Row(mainAxisAlignment: MainAxisAlignment.center,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(    height: isMobile ? 160.0 : 200.0,
-                width: isMobile ? 160.0 : 200.0,
-              child: Expanded(
-                child: _ExperienceCard(
-                  label: 'Years',
-                  value: '+4',
-                  delay: 0,
-                  isMobile: isMobile,
-                ),
+            SizedBox(
+              height: isMobile ? 160.0 : 200.0,
+              width: isMobile ? 160.0 : 200.0,
+              child: _ExperienceCard(
+                label: 'Years',
+                value: '+4',
+                delay: 0,
+                isMobile: isMobile,
               ),
             ),
             SizedBox(width: isMobile ? 10 : 20),
             SizedBox(
               height: isMobile ? 160.0 : 200.0,
               width: isMobile ? 160.0 : 200.0,
-              child: Expanded(
-                child: _ExperienceCard(
-                  label: 'Technology',
-                  value: '+15',
-                  delay: 150,
-                  isMobile: isMobile,
-                ),
+              child: _ExperienceCard(
+                label: 'Technology',
+                value: '+15',
+                delay: 150,
+                isMobile: isMobile,
               ),
             ),
           ],
@@ -136,15 +134,15 @@ class _ExperienceCardState extends State<_ExperienceCard>
                   width: _hovering ? 2 : 1,
                 ),
                 boxShadow: [
-                  BoxShadow(
-                    color: _hovering
-                        ? const Color.fromARGB(255, 150, 100, 200).withOpacity(0.4)
-                        : Colors.black.withOpacity(0.3),
-                    blurRadius: _hovering ? 20 : 8,
-                    spreadRadius: _hovering ? 2 : 0,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+                   BoxShadow(
+                     color: _hovering
+                         ? const Color.fromARGB(255, 150, 100, 200).withValues(alpha: 0.4)
+                         : Colors.black.withValues(alpha: 0.3),
+                     blurRadius: _hovering ? 20 : 8,
+                     spreadRadius: _hovering ? 2 : 0,
+                     offset: const Offset(0, 4),
+                   ),
+                 ],
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
