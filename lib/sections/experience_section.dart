@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ExperienceSection extends StatelessWidget {
   const ExperienceSection({super.key});
@@ -79,8 +79,7 @@ class _ExperienceCardState extends State<_ExperienceCard> {
    @override
    void initState() {
      super.initState();
-     final isWeb = !Platform.isAndroid && !Platform.isIOS;
-     final actualDelay = isWeb ? 0 : widget.delay;
+     final actualDelay = kIsWeb ? 0 : widget.delay;
      
      Future.delayed(Duration(milliseconds: actualDelay), () {
        if (mounted) {

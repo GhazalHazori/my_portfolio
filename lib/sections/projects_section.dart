@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -302,9 +303,10 @@ class _VideoOrImageWithControlsState extends State<_VideoOrImageWithControls> {
     if (v != null && v.isNotEmpty) {
       if (v.startsWith("http")) {
         _controller = VideoPlayerController.network(v);
+      } else if (kIsWeb) {
+        _controller = VideoPlayerController.network(v);
       } else {
-        // For web, use network with full path, for mobile use asset
-        _controller = VideoPlayerController.network('$v');
+        _controller = VideoPlayerController.asset(v);
       }
 
       _controller!.initialize().then((_) {
@@ -466,13 +468,21 @@ class _FullScreenVideoPlayerState extends State<_FullScreenVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _controller = widget.videoUrl.startsWith("http")
-        ? VideoPlayerController.network(widget.videoUrl)
-        : VideoPlayerController.asset(widget.videoUrl);
+    if (widget.videoUrl.startsWith("http")) {
+      _controller = VideoPlayerController.network(widget.videoUrl);
+    } else if (kIsWeb) {
+      _controller = VideoPlayerController.network(widget.videoUrl);
+    } else {
+      _controller = VideoPlayerController.asset(widget.videoUrl);
+    }
 
     _controller.initialize().then((_) {
-      setState(() {});
-      _controller.play();
+      if (mounted) {
+        setState(() {});
+        _controller.play();
+      }
+    }).catchError((error) {
+      print('Full screen video error: $error');
     });
   }
 
